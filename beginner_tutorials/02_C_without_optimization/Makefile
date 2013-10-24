@@ -5,12 +5,13 @@
 #	A makefile script for generation of raspberry pi kernel images.
 ###############################################################################
 
+# make dependant on h-files
+DEPS = $(SOURCE)/include
+
 # The toolchain to use. arm-none-eabi works, but there does exist 
 # arm-bcm2708-linux-gnueabi.
-
-# use prefix because IDE like geany or qtcreator do not inherit bash-PATH-variable
-PREFIX ?= /home/ikt/my_tc/bin
-ARMGNU ?= $(PREFIX)/arm-none-eabi
+# make sure that the bin-folder is in the PATH-Variable!
+ARMGNU ?= arm-unknown-eabi
 
 # The intermediate directory for compiled object files.
 BUILD = build/
@@ -61,15 +62,8 @@ $(BUILD)output.elf : $(OBJECTS) $(LINKER)
 $(BUILD)%.o: $(SOURCE)%.s
 	$(ARMGNU)-as -I $(SOURCE) $< -o $@
 
-#$(BUILD)%.o: $(SOURCE)%.c
-#	$(ARMGNU)-gcc -MD -O2 -Wall -nostdlib -nostartfiles -ffreestanding -marm -mcpu=arm1176jzf-s -c $(SOURCE) -I $(INCLUDE) $< -o $@
-
-
 $(BUILD)%.o: $(SOURCE)%.c
-	$(ARMGNU)-gcc -MMD -O2 -Wall -nostdlib -nostartfiles -ffreestanding -marm -mcpu=arm1176jzf-s -c  -I $(INCLUDE) $< -o $@
-	
--include $(OBJECTS:.o=.d)
-
+	$(ARMGNU)-gcc -O2 -Wall -nostdlib -nostartfiles -ffreestanding -marm -mcpu=arm1176jzf-s -c $(SOURCE) -I $(INCLUDE) $< -o $@
 
 $(BUILD):
 	mkdir $@
