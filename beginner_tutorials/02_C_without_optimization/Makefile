@@ -11,7 +11,7 @@ DEPS = $(SOURCE)/include
 # The toolchain to use. arm-none-eabi works, but there does exist 
 # arm-bcm2708-linux-gnueabi.
 # make sure that the bin-folder is in the PATH-Variable!
-ARMGNU ?= arm-unknown-eabi
+ARMGNU ?= arm-none-eabi
 
 # The intermediate directory for compiled object files.
 BUILD = build/
